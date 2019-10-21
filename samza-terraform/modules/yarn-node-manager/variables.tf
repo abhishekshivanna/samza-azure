@@ -16,15 +16,15 @@ variable "resource_group_name" {
   description = "The name of the resouce group"
 }
 
-variable "resource_manager_subnet" {
+variable "node_manager_subnet" {
   description = "The name of the subnet the Resource Manager belongs to"
 }
 
-variable "resource_manager_vnet" {
+variable "node_manager_vnet" {
   description = "The name of the vnet the Resource Manager belongs to"
 }
 
-variable "resource_manager_nsg" {
+variable "node_manager_nsg" {
   description = "The name of the network security group the Resource Manager belongs"
 }
 
@@ -35,3 +35,12 @@ variable "username" {
 variable "password" {
   description = "The password used to login to the machine"
 }
+
+variable "resource_manager_ip_address" {
+  description = "The IP address of the resource manager that this node manager instance will connect to"
+}
+
+locals {
+  yarn_config_path = "${path.root}/conf/yarn-site.xml"
+}
+

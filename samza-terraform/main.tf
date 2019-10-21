@@ -33,7 +33,24 @@ module "yarn-resource-manager" {
   resource_group_name =  "${data.azurerm_resource_group.resource_group.name}"
   password = "${var.password}"
   username = "${var.username}"
+
   resource_manager_subnet = "${azurerm_subnet.subnet.name}"
   resource_manager_vnet = "${azurerm_virtual_network.vnet.name}"
   resource_manager_nsg = "${data.azurerm_network_security_group.network_security_group.name}"
+  prefix = "${var.prefix}"
+}
+
+
+module "yarn-node-manager" {
+  source = "./modules/yarn-node-manager"
+  resource_group_name =  "${data.azurerm_resource_group.resource_group.name}"
+  password = "${var.password}"
+  username = "${var.username}"
+
+  node_manager_vnet = "${azurerm_virtual_network.vnet.name}"
+  node_manager_subnet = "${azurerm_subnet.subnet.name}"
+  node_manager_nsg = "${data.azurerm_network_security_group.network_security_group.name}"
+  resource_manager_ip_address = "${module.yarn-resource-manager.resource_manager_ip}"
+
+  prefix = "${var.prefix}"
 }
