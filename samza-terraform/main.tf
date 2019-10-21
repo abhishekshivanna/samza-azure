@@ -38,6 +38,7 @@ module "yarn-resource-manager" {
   resource_manager_vnet = "${azurerm_virtual_network.vnet.name}"
   resource_manager_nsg = "${data.azurerm_network_security_group.network_security_group.name}"
   prefix = "${var.prefix}"
+  location = "${data.azurerm_resource_group.resource_group.location}"
 }
 
 
@@ -53,4 +54,5 @@ module "yarn-node-manager" {
   resource_manager_ip_address = "${module.yarn-resource-manager.resource_manager_ip}"
 
   prefix = "${var.prefix}"
+  location = "${data.azurerm_resource_group.resource_group.location}"
 }

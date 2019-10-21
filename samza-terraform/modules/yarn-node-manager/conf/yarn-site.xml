@@ -10,7 +10,7 @@
   </property>
   <property>
     <name>yarn.resourcemanager.hostname</name>
-    <value>127.0.0.1</value>
+    <value>${resource_manager_ip}</value>
   </property>
   <property>
     <name>yarn.nodemanager.delete.debug-delay.sec</name>
