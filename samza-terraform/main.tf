@@ -10,7 +10,7 @@ data "azurerm_resource_group" "resource_group" {
 
 data "azurerm_network_security_group" "network_security_group" {
   name = "${var.network_security_group_name}"
-  location = "${data.azurerm_resource_group.resource_group.location}"
+  # location = "${data.azurerm_resource_group.resource_group.location}"
   resource_group_name = "${data.azurerm_resource_group.resource_group.name}"
 }
 

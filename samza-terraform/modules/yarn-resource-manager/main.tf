@@ -28,7 +28,7 @@ resource "azurerm_virtual_machine" "resource_manager_instance" {
   location              = "${data.azurerm_resource_group.resource_group.location}"
   resource_group_name   = "${data.azurerm_resource_group.resource_group.name}"
   network_interface_ids = ["${azurerm_network_interface.resource_manager_nic.id}"]
-  vm_size               = "Baisc_A1" # TODO: Replace this with a var
+  vm_size               = "Standard_B2s" # TODO: Replace this with a var
 
   # This means the OS Disk will be deleted when Terraform destroys the Virtual Machine
   # NOTE: This may not be optimal in all cases.
@@ -65,7 +65,7 @@ resource "azurerm_virtual_machine" "resource_manager_instance" {
       host = "${azurerm_public_ip.resource_manager_public_ip.ip_address}"
     }
 
-    source      = "bin/rm.sh"
+    source      = "${path.module}/bin/rm.sh"
     destination = "/etc/rm.sh"
   }
 
