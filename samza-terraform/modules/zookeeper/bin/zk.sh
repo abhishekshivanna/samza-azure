@@ -30,7 +30,7 @@ wait_for_service() {
   echo "Waiting for $SERVICE_NAME to start..."
   local CURRENT_WAIT_TIME=0
 
-  while [[ $(echo | nc -w1 localhost $ZOOKEEPER_PORT >/dev/null 2>&1 ;echo $?) -ne 0 ]]; do
+  while [ $(echo | nc -w1 localhost $ZOOKEEPER_PORT >/dev/null 2>&1 ;echo $?) -ne 0 ]; do
       printf '.'
       sleep 1
       if [ $((++CURRENT_WAIT_TIME)) -eq $SERVICE_WAIT_TIMEOUT_SEC ]; then

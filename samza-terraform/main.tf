@@ -57,3 +57,14 @@ module "yarn-node-manager" {
   prefix = "${var.prefix}"
   location = "${data.azurerm_resource_group.resource_group.location}"
 }
+
+module "zookeeper" {
+  source = "./modules/zookeeper"
+  password = "${var.password}"
+  username = "${var.username}"
+  prefix = "${var.prefix}"
+  resource_group_name =  "${data.azurerm_resource_group.resource_group.name}"
+  zookeeper_vnet = "${azurerm_virtual_network.vnet.name}"
+  zookeeper_subnet = "${azurerm_subnet.subnet.name}"
+  zookeeper_nsg = "${data.azurerm_network_security_group.network_security_group.name}"
+}
