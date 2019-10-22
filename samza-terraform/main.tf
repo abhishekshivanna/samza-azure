@@ -44,7 +44,7 @@ module "yarn-resource-manager" {
 module "yarn-node-manager" {
   source = "./modules/yarn-node-manager"
 
-  count = "${var.node_manager_count}"
+  nm_count = "${var.nm_count}"
   resource_group_name =  "${data.azurerm_resource_group.resource_group.name}"
   password = "${var.password}"
   username = "${var.username}"

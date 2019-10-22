@@ -3,7 +3,7 @@ locals {
 }
 
 resource "azurerm_public_ip" "node_manager_public_ip" {
-  count               = "${var.count}"
+  count               = "${var.nm_count}"
   name                = "${var.prefix}-${var.nm-prefix}-publicip-${count.index}"
   resource_group_name = "${data.azurerm_resource_group.resource_group.name}"
   location            = "${data.azurerm_resource_group.resource_group.location}"
@@ -11,7 +11,7 @@ resource "azurerm_public_ip" "node_manager_public_ip" {
 }
 
 resource "azurerm_network_interface" "node_manager_nic" {
-  count               = "${var.count}"
+  count               = "${var.nm_count}"
   name                = "${var.prefix}-${var.nm-prefix}-nic-${count.index}"
   location            = "${data.azurerm_resource_group.resource_group.location}"
   resource_group_name = "${data.azurerm_resource_group.resource_group.name}"
@@ -26,7 +26,7 @@ resource "azurerm_network_interface" "node_manager_nic" {
 }
 
 resource "azurerm_virtual_machine" "node_manager_instance" {
-  count                 = "${var.count}"
+  count                 = "${var.nm_count}"
   name                  = "${local.virtual_machine_name}-${count.index}"
   location              = "${data.azurerm_resource_group.resource_group.location}"
   resource_group_name   = "${data.azurerm_resource_group.resource_group.name}"

@@ -31,7 +31,7 @@ variable "network_security_group_name" {
   description = "The predefined network security group to use for the cluster"
 }
 
-variable "node_manager_count" {
+variable "nm_count" {
   default = 2
   description = "The number of Node Manager hosts to start"
 }
