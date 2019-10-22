@@ -76,7 +76,7 @@ resource "azurerm_virtual_machine" "resource_manager_instance" {
       host = "${azurerm_public_ip.resource_manager_public_ip.ip_address}"
     }
 
-    source      = "conf/yarn-site.xml"
+    content = "${data.template_file.yarn_config.rendered}"
     destination = "yarn-site.xml"
   }
 

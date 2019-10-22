@@ -38,8 +38,3 @@ variable "password" {
 variable "resource_manager_ip_address" {
   description = "The IP address of the resource manager that this node manager instance will connect to"
 }
-
-locals {
-  yarn_config_path = "${path.module}/conf/yarn-site.xml"
-}
-

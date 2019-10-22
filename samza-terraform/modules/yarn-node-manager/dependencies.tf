@@ -17,3 +17,11 @@ data "azurerm_network_security_group" "node_manager_nsg" {
   name = "${var.node_manager_nsg}"
   resource_group_name = "${data.azurerm_resource_group.resource_group.name}"
 }
+
+data "template_file" "yarn_config" {
+  template = "${file("${path.module}/conf/yarn-site.xml")}"
+
+  vars = {
+    resource_manager_ip = "${var.resource_manager_ip_address}"
+  }
+}
