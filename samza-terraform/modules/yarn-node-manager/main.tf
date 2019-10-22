@@ -52,7 +52,7 @@ resource "azurerm_virtual_machine" "node_manager_instance" {
   }
 
   os_profile {
-    computer_name  = "${local.virtual_machine_name}"
+    computer_name  = "${local.virtual_machine_name}-${count.index}"
     admin_username = "${var.username}"
     admin_password = "${var.password}"
   }
@@ -65,7 +65,7 @@ resource "azurerm_virtual_machine" "node_manager_instance" {
     connection {
       user     = "${var.username}"
       password = "${var.password}"
-      host = "${element(azurerm_public_ip.node_manager_public_ip.*.id, count.index)}"
+      host = "${element(azurerm_public_ip.node_manager_public_ip.*.ip_address, count.index)}"
     }
 
     source      = "${path.module}/bin/nm.sh"
@@ -76,7 +76,7 @@ resource "azurerm_virtual_machine" "node_manager_instance" {
     connection {
       user     = "${var.username}"
       password = "${var.password}"
-      host = "${element(azurerm_public_ip.node_manager_public_ip.*.id, count.index)}"
+      host = "${element(azurerm_public_ip.node_manager_public_ip.*.ip_address, count.index)}"
     }
 
     content = "${data.template_file.yarn_config.rendered}"
@@ -87,7 +87,7 @@ resource "azurerm_virtual_machine" "node_manager_instance" {
     connection {
       user     = "${var.username}"
       password = "${var.password}"
-      host = "${element(azurerm_public_ip.node_manager_public_ip.*.id, count.index)}"
+      host = "${element(azurerm_public_ip.node_manager_public_ip.*.ip_address, count.index)}"
     }
 
     inline = [
