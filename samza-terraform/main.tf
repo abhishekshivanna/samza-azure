@@ -67,4 +67,19 @@ module "zookeeper" {
   zookeeper_vnet = "${azurerm_virtual_network.vnet.name}"
   zookeeper_subnet = "${azurerm_subnet.subnet.name}"
   zookeeper_nsg = "${data.azurerm_network_security_group.network_security_group.name}"
+  location = "${data.azurerm_resource_group.resource_group.location}"
+}
+
+module "kafka" {
+  source = "./modules/kafka"
+  default_partition_count = "1"
+  kafka_vnet = "${azurerm_virtual_network.vnet.name}"
+  kafka_subnet = "${azurerm_subnet.subnet.name}"
+  kafka_nsg = "${data.azurerm_network_security_group.network_security_group.name}"
+  location = "${data.azurerm_resource_group.resource_group.location}"
+  password = "${var.password}"
+  username = "${var.username}"
+  prefix = "${var.prefix}"
+  resource_group_name =  "${data.azurerm_resource_group.resource_group.name}"
+  zookeeper_ip = "${module.zookeeper.zookeeper_private_ip}"
 }

@@ -8,7 +8,6 @@ variable "zk-prefix" {
 }
 
 variable "location" {
-  default     = "westus2"
   description = "The Azure location where all resources in this example should be created"
 }
 
