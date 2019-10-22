@@ -42,12 +42,22 @@ wait_for_service() {
   echo "$SERVICE_NAME has started";
 }
 
+install_java() {
+  sudo apt install -y openjdk-8-jre-headless
+}
+
+setup_java() {
+  export JAVA_HOME="$(dirname $(dirname -- $(dirname -- $(readlink -f $(which java)))))"
+}
+
 install_zookeeper() {
   download
+  install_java
   cp "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}/conf/zoo_sample.cfg" "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}/conf/zoo.cfg"
 }
 
 start_zookeeper() {
+  setup_java
   if [ -f "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}/bin/zkServer.sh" ]; then
     cd "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}"
     bin/zkServer.sh start
@@ -59,6 +69,7 @@ start_zookeeper() {
 }
 
 stop_zookeeper() {
+  setup_java
   if [ -f "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}/bin/zkServer.sh" ]; then
     cd "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}"
     bin/zkServer.sh stop

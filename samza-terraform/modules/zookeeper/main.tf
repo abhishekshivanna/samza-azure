@@ -66,8 +66,8 @@ resource "azurerm_virtual_machine" "zookeeper_instance" {
       host = "${azurerm_public_ip.zookeeper_public_ip.ip_address}"
     }
 
-    source      = "bin/zk.sh"
-    destination = "/etc/zk.sh"
+    source      = "${path.module}/bin/zk.sh"
+    destination = "zk.sh"
   }
 
   provisioner "remote-exec" {
@@ -78,8 +78,8 @@ resource "azurerm_virtual_machine" "zookeeper_instance" {
     }
 
     inline = [
-      "chmod +x /etc/zk.sh",
-      "/etc/zk.sh start"
+      "chmod +x zk.sh",
+      "bash zk.sh start"
     ]
   }
 }
