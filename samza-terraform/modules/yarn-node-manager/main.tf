@@ -3,14 +3,16 @@ locals {
 }
 
 resource "azurerm_public_ip" "node_manager_public_ip" {
-  name                = "${var.prefix}-${var.nm-prefix}-publicip"
+  count               = "${var.count}"
+  name                = "${var.prefix}-${var.nm-prefix}-publicip-${count.index}"
   resource_group_name = "${data.azurerm_resource_group.resource_group.name}"
   location            = "${data.azurerm_resource_group.resource_group.location}"
   allocation_method   = "Static" # TODO: Use Dynamic (Blocker: for some reason remote-exec fails to pick up IP with set to Dynamic)
 }
 
 resource "azurerm_network_interface" "node_manager_nic" {
-  name                = "${var.prefix}-${var.nm-prefix}-nic"
+  count               = "${var.count}"
+  name                = "${var.prefix}-${var.nm-prefix}-nic-${count.index}"
   location            = "${data.azurerm_resource_group.resource_group.location}"
   resource_group_name = "${data.azurerm_resource_group.resource_group.name}"
   network_security_group_id = "${data.azurerm_network_security_group.node_manager_nsg.id}"
@@ -19,15 +21,16 @@ resource "azurerm_network_interface" "node_manager_nic" {
     name                          = "configuration"
     subnet_id                     = "${data.azurerm_subnet.node_manager_subnet.id}"
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = "${azurerm_public_ip.node_manager_public_ip.id}" # TODO: Figure out a way not to use public IPs
+    public_ip_address_id          = "${element(azurerm_public_ip.node_manager_public_ip.*.id, count.index)}" # TODO: Figure out a way not to use public IPs
   }
 }
 
 resource "azurerm_virtual_machine" "node_manager_instance" {
-  name                  = "${local.virtual_machine_name}"
+  count                 = "${var.count}"
+  name                  = "${local.virtual_machine_name}-${count.index}"
   location              = "${data.azurerm_resource_group.resource_group.location}"
   resource_group_name   = "${data.azurerm_resource_group.resource_group.name}"
-  network_interface_ids = ["${azurerm_network_interface.node_manager_nic.id}"]
+  network_interface_ids = ["${element(azurerm_network_interface.node_manager_nic.*.id, count.index)}"]
   vm_size               = "Standard_B2s" # TODO: Replace this with a var
 
   # This means the OS Disk will be deleted when Terraform destroys the Virtual Machine
@@ -42,7 +45,7 @@ resource "azurerm_virtual_machine" "node_manager_instance" {
   }
 
   storage_os_disk {
-    name              = "${var.prefix}-${var.nm-prefix}-osdisk"
+    name              = "${var.prefix}-${var.nm-prefix}-osdisk-${count.index}"
     caching           = "ReadWrite"
     create_option     = "FromImage"
     managed_disk_type = "Standard_LRS"
@@ -62,7 +65,7 @@ resource "azurerm_virtual_machine" "node_manager_instance" {
     connection {
       user     = "${var.username}"
       password = "${var.password}"
-      host = "${azurerm_public_ip.node_manager_public_ip.ip_address}"
+      host = "${element(azurerm_public_ip.node_manager_public_ip.*.id, count.index)}"
     }
 
     source      = "${path.module}/bin/nm.sh"
@@ -73,7 +76,7 @@ resource "azurerm_virtual_machine" "node_manager_instance" {
     connection {
       user     = "${var.username}"
       password = "${var.password}"
-      host = "${azurerm_public_ip.node_manager_public_ip.ip_address}"
+      host = "${element(azurerm_public_ip.node_manager_public_ip.*.id, count.index)}"
     }
 
     content = "${data.template_file.yarn_config.rendered}"
@@ -84,7 +87,7 @@ resource "azurerm_virtual_machine" "node_manager_instance" {
     connection {
       user     = "${var.username}"
       password = "${var.password}"
-      host = "${azurerm_public_ip.node_manager_public_ip.ip_address}"
+      host = "${element(azurerm_public_ip.node_manager_public_ip.*.id, count.index)}"
     }
 
     inline = [

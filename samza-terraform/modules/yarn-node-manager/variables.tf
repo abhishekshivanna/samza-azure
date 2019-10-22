@@ -38,3 +38,7 @@ variable "password" {
 variable "resource_manager_ip_address" {
   description = "The IP address of the resource manager that this node manager instance will connect to"
 }
+
+variable "count" {
+  description = "The number of Node Manager hosts to start"
+}
