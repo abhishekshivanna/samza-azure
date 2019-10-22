@@ -41,8 +41,11 @@ wait_for_service() {
   echo "$SERVICE_NAME has started";
 }
 
-install_java () {
+install_java() {
   sudo apt install -y openjdk-8-jre-headless
+}
+
+setup_java() {
   export JAVA_HOME="$(dirname $(dirname -- $(dirname -- $(readlink -f $(which java)))))"
 }
 
@@ -53,6 +56,7 @@ install_node_manager() {
 }
 
 start_node_manager() {
+  setup_java
   if [ -f "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}/sbin/yarn-daemon.sh" ]; then
     $DEPLOY_ROOT_DIR/$SERVICE_NAME/sbin/yarn-daemon.sh start nodemanager
     wait_for_service "nodemanager" $NODEMANAGER_PORT
@@ -62,6 +66,7 @@ start_node_manager() {
 }
 
 stop_node_manager() {
+  setup_java
   if [ -f "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}/sbin/yarn-daemon.sh" ]; then
     $DEPLOY_ROOT_DIR/$SERVICE_NAME/sbin/yarn-daemon.sh stop nodemanager
   else

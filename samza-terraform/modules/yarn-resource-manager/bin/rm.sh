@@ -41,11 +41,13 @@ wait_for_service() {
   echo "$SERVICE_NAME has started";
 }
 
-install_java () {
+install_java() {
   sudo apt install -y openjdk-8-jre-headless
-  export JAVA_HOME="$(dirname $(dirname -- $(dirname -- $(readlink -f $(which java)))))"
 }
 
+setup_java() {
+  export JAVA_HOME="$(dirname $(dirname -- $(dirname -- $(readlink -f $(which java)))))"
+}
 
 install_resource_manager() {
   download
@@ -54,6 +56,7 @@ install_resource_manager() {
 }
 
 start_resource_manager() {
+  setup_java
   if [ -f "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}/sbin/yarn-daemon.sh" ]; then
     $DEPLOY_ROOT_DIR/$SERVICE_NAME/sbin/yarn-daemon.sh start resourcemanager
     wait_for_service "resourcemanager" $RESOURCEMANAGER_PORT
@@ -63,6 +66,7 @@ start_resource_manager() {
 }
 
 stop_resource_manager() {
+  setup_java
   if [ -f "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}/sbin/yarn-daemon.sh" ]; then
     $DEPLOY_ROOT_DIR/$SERVICE_NAME/sbin/yarn-daemon.sh stop resourcemanager
   else
