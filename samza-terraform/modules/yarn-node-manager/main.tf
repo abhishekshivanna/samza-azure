@@ -66,7 +66,7 @@ resource "azurerm_virtual_machine" "node_manager_instance" {
     }
 
     source      = "${path.module}/bin/nm.sh"
-    destination = "/etc/nm.sh"
+    destination = "nm.sh"
   }
 
   provisioner "file" {
@@ -76,8 +76,8 @@ resource "azurerm_virtual_machine" "node_manager_instance" {
       host = "${azurerm_public_ip.node_manager_public_ip.ip_address}"
     }
 
-    content = "${data.template_file.yarn_config}"
-    destination = "/etc/yarn-site.xml"
+    content = "${data.template_file.yarn_config.rendered}"
+    destination = "yarn-site.xml"
   }
 
   provisioner "remote-exec" {
@@ -88,8 +88,8 @@ resource "azurerm_virtual_machine" "node_manager_instance" {
     }
 
     inline = [
-      "chmod +x /etc/nm.sh",
-      "/etc/nm.sh start"
+      "chmod +x nm.sh",
+      "bash nm.sh start"
     ]
   }
 }

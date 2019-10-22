@@ -3,6 +3,7 @@
 YARN_TARBALL="https://archive.apache.org/dist/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz"
 SERVICE_NAME="node-manager"
 NODEMANAGER_PORT=8042
+SERVICE_WAIT_TIMEOUT_SEC=20
 
 BASE_DIR="$(pwd)"
 DEPLOY_ROOT_DIR="${BASE_DIR}/deploy"
@@ -28,7 +29,7 @@ wait_for_service() {
   echo "Waiting for ${SERVICE_NAME} to start..."
   local CURRENT_WAIT_TIME=0
 
-  while [[ $(echo | nc -w1 localhost $PORT >/dev/null 2>&1 ;echo $?) -ne 0 ]]; do
+  while [ $(echo | nc -w1 localhost $NODEMANAGER_PORT >/dev/null 2>&1 ;echo $?) -ne 0 ]; do
       printf '.'
       sleep 1
       if [ $((++CURRENT_WAIT_TIME)) -eq $SERVICE_WAIT_TIMEOUT_SEC ]; then
@@ -40,8 +41,14 @@ wait_for_service() {
   echo "$SERVICE_NAME has started";
 }
 
+install_java () {
+  sudo apt install -y openjdk-8-jre-headless
+  export JAVA_HOME="$(dirname $(dirname -- $(dirname -- $(readlink -f $(which java)))))"
+}
+
 install_node_manager() {
   download
+  install_java
   cp "${BASE_DIR}/yarn-site.xml" "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}/etc/hadoop/yarn-site.xml"
 }
 

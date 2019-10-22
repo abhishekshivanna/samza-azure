@@ -66,7 +66,7 @@ resource "azurerm_virtual_machine" "resource_manager_instance" {
     }
 
     source      = "${path.module}/bin/rm.sh"
-    destination = "/etc/rm.sh"
+    destination = "rm.sh"
   }
 
   provisioner "file" {
@@ -77,7 +77,7 @@ resource "azurerm_virtual_machine" "resource_manager_instance" {
     }
 
     source      = "conf/yarn-site.xml"
-    destination = "/etc/yarn-site.xml"
+    destination = "yarn-site.xml"
   }
 
   provisioner "remote-exec" {
@@ -88,8 +88,8 @@ resource "azurerm_virtual_machine" "resource_manager_instance" {
     }
 
     inline = [
-      "chmod +x /etc/rm.sh",
-      "/etc/rm.sh start"
+      "chmod +x rm.sh",
+      "bash rm.sh start"
     ]
   }
 }
