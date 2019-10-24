@@ -9,6 +9,10 @@
     <value>10</value>
   </property>
   <property>
+    <name>fs.http.impl</name>
+    <value>org.apache.hadoop.fs.http.HttpFileSystem</value>
+  </property>
+  <property>
     <name>yarn.resourcemanager.hostname</name>
     <value>${resource_manager_ip}</value>
   </property>

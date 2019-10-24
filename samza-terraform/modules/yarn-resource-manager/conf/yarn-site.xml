@@ -4,4 +4,8 @@
     <name>yarn.resourcemanager.scheduler.class</name>
     <value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.fifo.FifoScheduler</value>
   </property>
+  <property>
+    <name>fs.http.impl</name>
+    <value>org.apache.hadoop.fs.http.HttpFileSystem</value>
+  </property>
 </configuration>

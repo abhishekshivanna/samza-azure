@@ -1,6 +1,6 @@
 #!/bin/sh
 
-YARN_TARBALL="https://archive.apache.org/dist/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz"
+YARN_TARBALL="https://archive.apache.org/dist/hadoop/common/hadoop-2.9.2/hadoop-2.9.2.tar.gz"
 SERVICE_NAME="resource-manager"
 RESOURCEMANAGER_PORT=8032
 SERVICE_WAIT_TIMEOUT_SEC=20
