@@ -13,6 +13,9 @@ cd azure-hacks/samza-terraform
 terrform init
 ```
 
+**Note:** this deployment assumes that a **Resource Group** and **Network Security Group** already exists.
+
+
 Create a file called `variables.tfvars` and add the following contents
 ```properties
 prefix = "<some-prefix-to-name-resources>"
