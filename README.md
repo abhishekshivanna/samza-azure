@@ -8,7 +8,7 @@ This guide is to setup a YARN cluster with 1 RM (no HA) and multiple NM hosts.
 2) Start cloudshell (If needed, setup a new Storage Account and File Share)
 
 ```sh
-git clone https://github.com/abhishekshivanna/azure-hacks.git
+git clone https://github.com/abhishekshivanna/samza-azure.git
 cd azure-hacks/samza-terraform
 terrform init
 ```
