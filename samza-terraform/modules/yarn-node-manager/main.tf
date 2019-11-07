@@ -31,17 +31,17 @@ resource "azurerm_virtual_machine" "node_manager_instance" {
   location              = "${data.azurerm_resource_group.resource_group.location}"
   resource_group_name   = "${data.azurerm_resource_group.resource_group.name}"
   network_interface_ids = ["${element(azurerm_network_interface.node_manager_nic.*.id, count.index)}"]
-  vm_size               = "Standard_B2s" # TODO: Replace this with a var
+  vm_size               = "${var.vm_size}" # TODO: Replace this with a var
 
   # This means the OS Disk will be deleted when Terraform destroys the Virtual Machine
   # NOTE: This may not be optimal in all cases.
   delete_os_disk_on_termination = true
 
   storage_image_reference {
-    publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "16.04-LTS"
-    version   = "latest"
+    publisher = var.storage_image_publisher
+    offer     = var.storage_image_offer
+    sku       = var.storage_image_sku
+    version   = var.storage_image_version
   }
 
   storage_os_disk {
@@ -91,6 +91,8 @@ resource "azurerm_virtual_machine" "node_manager_instance" {
     }
 
     inline = [
+      "echo ${var.password} | sudo -S yum install -y java-1.8.0-openjdk-headless",
+      "sudo yum install -y nc",
       "chmod +x nm.sh",
       "bash nm.sh start"
     ]

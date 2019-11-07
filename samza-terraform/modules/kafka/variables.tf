@@ -41,3 +41,23 @@ variable "default_partition_count" {
 variable "zookeeper_ip" {
   description = "The IP address of a node in the Zookeeper cluster"
 }
+
+variable "vm_size" {
+  description = "The VM SKU"
+}
+
+variable "storage_image_publisher" {
+  description = "Image publisher"
+}
+
+variable "storage_image_offer" {
+  description = "Image offer"
+}
+
+variable "storage_image_sku" {
+  description = "Image SKU"
+}
+
+variable "storage_image_version" {
+  description = "Image Version"
+}

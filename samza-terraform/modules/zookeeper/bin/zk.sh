@@ -47,12 +47,11 @@ install_java() {
 }
 
 setup_java() {
-  export JAVA_HOME="$(dirname $(dirname -- $(dirname -- $(readlink -f $(which java)))))"
+  export JAVA_HOME=`readlink -f /usr/bin/java | sed "s:/bin/java::"`
 }
 
 install_zookeeper() {
   download
-  install_java
   cp "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}/conf/zoo_sample.cfg" "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}/conf/zoo.cfg"
 }
 
