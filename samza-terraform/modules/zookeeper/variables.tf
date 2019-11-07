@@ -33,3 +33,23 @@ variable "username" {
 variable "password" {
   description = "The password used to login to the machine"
 }
+
+variable "vm_size" {
+  description = "The VM SKU"
+}
+
+variable "storage_image_publisher" {
+  description = "Image publisher"
+}
+
+variable "storage_image_offer" {
+  description = "Image offer"
+}
+
+variable "storage_image_sku" {
+  description = "Image SKU"
+}
+
+variable "storage_image_version" {
+  description = "Image Version"
+}

@@ -47,12 +47,11 @@ install_java() {
 }
 
 setup_java() {
-  export JAVA_HOME="$(dirname $(dirname -- $(dirname -- $(readlink -f $(which java)))))"
+  export JAVA_HOME=`readlink -f /usr/bin/java | sed "s:/bin/java::"`
 }
 
 install_kafka() {
   download
-  install_java
   # have to use SIGTERM since nohup on appears to ignore SIGINT
   # and Kafka switched to SIGINT in KAFKA-1031.
   sed -i.bak 's/SIGINT/SIGTERM/g' "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}/bin/kafka-server-stop.sh"

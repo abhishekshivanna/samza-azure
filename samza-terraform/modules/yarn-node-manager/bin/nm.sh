@@ -46,12 +46,11 @@ install_java() {
 }
 
 setup_java() {
-  export JAVA_HOME="$(dirname $(dirname -- $(dirname -- $(readlink -f $(which java)))))"
+  export JAVA_HOME=`readlink -f /usr/bin/java | sed "s:/bin/java::"`
 }
 
 install_node_manager() {
   download
-  install_java
   cp "${BASE_DIR}/yarn-site.xml" "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}/etc/hadoop/yarn-site.xml"
 }
 
