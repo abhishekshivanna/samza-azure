@@ -38,8 +38,13 @@ variable "nm_count" {
 
 # Define VM class/size for all VMs
 
+variable "samza_vm_size" {
+  default = "Standard_D32_v3"
+  description = "The VM SKU for Samza Infra"
+}
+
 variable "vm_size" {
-  default = "Standard_D2_v3"
+  default = "Standard_D8_v3"
   description = "The VM SKU"
 }
 

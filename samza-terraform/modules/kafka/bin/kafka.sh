@@ -5,11 +5,6 @@ KAFKA_PORT=9092
 SERVICE_NAME="kafka"
 SERVICE_WAIT_TIMEOUT_SEC=120
 
-
-METRICS_COLLECTOR_TARBALL="samza-metrics-collector-release-linux-0.0.2.tar.gz"
-METRICS_COLLECTOR_TARBALL_URI="https://github.com/dnishimura/samza-metrics-collector/releases/download/0.0.2/$METRICS_COLLECTOR_TARBALL"
-METRICS_COLLECTOR_DIR=samza-metrics-collector-release
-
 BASE_DIR="$(pwd)"
 DEPLOY_ROOT_DIR="${BASE_DIR}/deploy"
 
@@ -28,12 +23,6 @@ download() {
   rm -rf "${DEPLOY_ROOT_DIR}"
   mkdir -p "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}"
   tar -xf "${PACKAGE_FILE_NAME}.tar.gz" --strip-components=1 -C "${DEPLOY_ROOT_DIR}/${SERVICE_NAME}"
-
-  pushd $DOWNLOAD_CACHE_DIR
-  wget $METRICS_COLLECTOR_TARBALL_URI
-  tar -zxf $METRICS_COLLECTOR_TARBALL
-  mv $METRICS_COLLECTOR_DIR $DEPLOY_ROOT_DIR/
-  popd
 }
 
 wait_for_service() {
@@ -77,9 +66,6 @@ start_kafka() {
     nohup bin/kafka-server-start.sh config/server.properties > logs/kafka.log 2>&1 &
     cd - > /dev/null
     wait_for_service "kafka" $KAFKA_PORT
-    echo "Starting $DEPLOY_ROOT_DIR/$METRICS_COLLECTOR_DIR/samza-metrics-collector"
-    LD_LIBRARY_PATH=$DEPLOY_ROOT_DIR/$METRICS_COLLECTOR_DIR nohup $DEPLOY_ROOT_DIR/$METRICS_COLLECTOR_DIR/samza-metrics-collector > $DEPLOY_ROOT_DIR/$SERVICE_NAME/logs/samza-metrics-collector.log 2>&1 &
-    sleep 3
   else
     echo 'ERROR: Kafka is not installed at: ${DEPLOY_ROOT_DIR}/${SERVICE_NAME}'
   fi
