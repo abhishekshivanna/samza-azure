@@ -9,6 +9,7 @@ METRICS_COLLECTOR_PID_FILE="samza-metrics-collector.pid"
 
 PROMETHEUS_TARBALL="prometheus-2.14.0.linux-amd64.tar.gz"
 PROMETHEUS_TARBALL_URI="https://github.com/prometheus/prometheus/releases/download/v2.14.0/$PROMETHEUS_TARBALL"
+PROMETHEUS_PID_FILE="prometheus.pid"
 
 BASE_DIR="$(pwd)"
 DEPLOY_ROOT_DIR="${BASE_DIR}/deploy"
@@ -61,20 +62,29 @@ start_metrics() {
   echo "Starting samza-metrics-collector connecting to Kafka server at $KAFKA_SERVER"
   LD_LIBRARY_PATH=$METRICS_COLLECTOR_DIR nohup $METRICS_COLLECTOR_DIR/samza-metrics-collector -kafka.bootstrap.servers=$KAFKA_SERVER > $LOG_DIR/samza-metrics-collector.log 2>&1 & echo $! > $METRICS_COLLECTOR_PID_FILE
   sleep 1
-  PROMETHEUS_DIR=$(ls | grep prometheus)
   
+  PROMETHEUS_DIR=$(ls | grep prometheus*amd64)
+  echo "Starting prometheus server $PROMETHEUS_DIR"
+  nohup $PROMETHEUS_DIR/prometheus --config.file=prometheus.yml > $LOG_DIR/prometheus.log 2>&1 & echo $! > $PROMETHEUS_PID_FILE
+  sleep 1
   popd
 }
 
 stop_metrics() {
   pushd $BASE_DIR
   COLLECTOR_PID=`head -n 1 $METRICS_COLLECTOR_PID_FILE`
+  PROMETHEUS_PID=`head -n 1 $PROMETHEUS_PID_FILE`
   kill -9 $COLLECTOR_PID
+  kill -9 $PROMETHEUS_PID
 }
 
 case $1 in
-  start)
+  download)
     download
+    exit 0
+  ;;
+
+  start)
     start_metrics
     exit 0
   ;;
@@ -85,4 +95,4 @@ case $1 in
   ;;
 esac
 
-echo "Usage: $0 stop|start"
+echo "Usage: $0 download|stop|start"

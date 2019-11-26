@@ -77,6 +77,17 @@ resource "azurerm_virtual_machine" "metrics_instance" {
       host = "${azurerm_public_ip.metrics_public_ip.ip_address}"
     }
 
+    source      = "${path.module}/conf/prometheus.yml"
+    destination = "prometheus.yml"
+  }
+
+  provisioner "file" {
+    connection {
+      user     = "${var.username}"
+      password = "${var.password}"
+      host = "${azurerm_public_ip.metrics_public_ip.ip_address}"
+    }
+
     content = "${data.template_file.kafka_server_config.rendered}"
     destination = "kafka-server.conf"
   }
@@ -89,9 +100,13 @@ resource "azurerm_virtual_machine" "metrics_instance" {
     }
 
     inline = [
+      "wget https://dl.grafana.com/oss/release/grafana-6.5.0-1.x86_64.rpm",
       "echo ${var.password} | sudo -S yum install -y java-1.8.0-openjdk-headless",
       "sudo yum install -y nc",
+      "sudo yum localinstall -y grafana-6.5.0-1.x86_64.rpm",
+      "sudo service grafana-server start",
       "chmod +x metrics-pipeline.sh",
+      "bash metrics-pipeline.sh download",
       "bash metrics-pipeline.sh start"
     ]
   }
