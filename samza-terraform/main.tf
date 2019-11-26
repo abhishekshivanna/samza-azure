@@ -62,7 +62,7 @@ module "yarn-node-manager" {
 
   prefix = "${var.prefix}"
   location = "${data.azurerm_resource_group.resource_group.location}"
-  vm_size = var.vm_size
+  vm_size = var.samza_vm_size
 
   storage_image_publisher = var.storage_image_publisher
   storage_image_offer = var.storage_image_offer
@@ -100,6 +100,25 @@ module "kafka" {
   prefix = "${var.prefix}"
   resource_group_name =  "${data.azurerm_resource_group.resource_group.name}"
   zookeeper_ip = "${module.zookeeper.zookeeper_private_ip}"
+  vm_size = var.vm_size
+
+  storage_image_publisher = var.storage_image_publisher
+  storage_image_offer = var.storage_image_offer
+  storage_image_sku = var.storage_image_sku
+  storage_image_version = var.storage_image_version
+}
+
+module "metrics-pipeline" {
+  source = "./modules/metrics-pipeline"
+  metrics_vnet = "${azurerm_virtual_network.vnet.name}"
+  metrics_subnet = "${azurerm_subnet.subnet.name}"
+  metrics_nsg = "${data.azurerm_network_security_group.network_security_group.name}"
+  location = "${data.azurerm_resource_group.resource_group.location}"
+  password = "${var.password}"
+  username = "${var.username}"
+  prefix = "${var.prefix}"
+  resource_group_name =  "${data.azurerm_resource_group.resource_group.name}"
+  kafka_ip = "${module.kafka.kafka_private_ip}"
   vm_size = var.vm_size
 
   storage_image_publisher = var.storage_image_publisher
