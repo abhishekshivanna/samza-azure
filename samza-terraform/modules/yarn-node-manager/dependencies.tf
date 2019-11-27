@@ -23,5 +23,6 @@ data "template_file" "yarn_config" {
 
   vars = {
     resource_manager_ip = var.resource_manager_ip_address
+    yarn_nodemanager_resource_memory_mb = var.yarn_nodemanager_resource_memory_mb
   }
 }

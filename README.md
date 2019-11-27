@@ -25,6 +25,9 @@ username = "<admin-username>"
 password = "<admin-password>"
 network_security_group_name = "<existing-network-sec-group-name>"
 location = "westus2"
+samza_vm_size = "Standard_D16s_v3"
+vm_size = "Standard_D8s_v3"
+yarn_nodemanager_resource_memory_mb = "49,152"
 ```
 Take a look at the `main.tf` file under the `samza-terraform` directory. Keep only the "modules" that you want deployed as part of this run.
 

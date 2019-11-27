@@ -20,4 +20,8 @@
     <name>yarn.nodemanager.delete.debug-delay.sec</name>
     <value>86400</value>
   </property>
+  <property>
+    <name>yarn.nodemanager.resource.memory-mb</name>
+    <value>${yarn_nodemanager_resource_memory_mb}</value>
+  </property>
 </configuration>

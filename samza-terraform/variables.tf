@@ -70,3 +70,8 @@ variable "storage_image_version" {
   default     = "latest"
   description = "Image Version"
 }
+
+variable "yarn_nodemanager_resource_memory_mb" {
+  default = "8192"
+  description = "Amount of physical memory, in MB, that can be allocated for containers"
+}

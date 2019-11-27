@@ -62,3 +62,7 @@ variable "storage_image_sku" {
 variable "storage_image_version" {
   description = "Image Version"
 }
+
+variable "yarn_nodemanager_resource_memory_mb" {
+  description = "Amount of physical memory, in MB, that can be allocated for containers"
+}

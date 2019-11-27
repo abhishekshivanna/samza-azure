@@ -62,6 +62,7 @@ module "yarn-node-manager" {
   prefix   = var.prefix
   location = var.location
   vm_size  = var.samza_vm_size
+  yarn_nodemanager_resource_memory_mb = var.yarn_nodemanager_resource_memory_mb
 
   storage_image_publisher = var.storage_image_publisher
   storage_image_offer     = var.storage_image_offer
