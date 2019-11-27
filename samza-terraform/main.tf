@@ -10,14 +10,12 @@ data "azurerm_resource_group" "resource_group" {
 
 data "azurerm_network_security_group" "network_security_group" {
   name = var.network_security_group_name
-
-  # location = "${data.azurerm_resource_group.resource_group.location}"
   resource_group_name = data.azurerm_resource_group.resource_group.name
 }
 
 resource "azurerm_virtual_network" "vnet" {
   name                = "${var.prefix}-vnet"
-  location            = data.azurerm_resource_group.resource_group.location
+  location            = var.location
   resource_group_name = data.azurerm_resource_group.resource_group.name
   address_space       = ["10.0.0.0/16"]
 }
@@ -39,7 +37,7 @@ module "yarn-resource-manager" {
   resource_manager_vnet   = azurerm_virtual_network.vnet.name
   resource_manager_nsg    = data.azurerm_network_security_group.network_security_group.name
   prefix                  = var.prefix
-  location                = data.azurerm_resource_group.resource_group.location
+  location                = var.location
   vm_size                 = var.vm_size
 
   storage_image_publisher = var.storage_image_publisher
@@ -62,7 +60,7 @@ module "yarn-node-manager" {
   resource_manager_ip_address = module.yarn-resource-manager.resource_manager_ip
 
   prefix   = var.prefix
-  location = data.azurerm_resource_group.resource_group.location
+  location = var.location
   vm_size  = var.vm_size
 
   storage_image_publisher = var.storage_image_publisher
@@ -80,7 +78,7 @@ module "zookeeper" {
   zookeeper_vnet      = azurerm_virtual_network.vnet.name
   zookeeper_subnet    = azurerm_subnet.subnet.name
   zookeeper_nsg       = data.azurerm_network_security_group.network_security_group.name
-  location            = data.azurerm_resource_group.resource_group.location
+  location            = var.location
   vm_size             = var.vm_size
 
   storage_image_publisher = var.storage_image_publisher
@@ -95,7 +93,7 @@ module "kafka" {
   kafka_vnet              = azurerm_virtual_network.vnet.name
   kafka_subnet            = azurerm_subnet.subnet.name
   kafka_nsg               = data.azurerm_network_security_group.network_security_group.name
-  location                = data.azurerm_resource_group.resource_group.location
+  location                = var.location
   password                = var.password
   username                = var.username
   prefix                  = var.prefix
@@ -114,7 +112,7 @@ module "metrics-pipeline" {
   metrics_vnet        = azurerm_virtual_network.vnet.name
   metrics_subnet      = azurerm_subnet.subnet.name
   metrics_nsg         = data.azurerm_network_security_group.network_security_group.name
-  location            = data.azurerm_resource_group.resource_group.location
+  location            = var.location
   password            = var.password
   username            = var.username
   prefix              = var.prefix

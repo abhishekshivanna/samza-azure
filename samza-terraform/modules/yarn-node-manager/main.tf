@@ -6,14 +6,14 @@ resource "azurerm_public_ip" "node_manager_public_ip" {
   count               = var.nm_count
   name                = "${var.prefix}-${var.nm-prefix}-publicip-${count.index}"
   resource_group_name = data.azurerm_resource_group.resource_group.name
-  location            = data.azurerm_resource_group.resource_group.location
+  location            = var.location
   allocation_method   = "Static" # TODO: Use Dynamic (Blocker: for some reason remote-exec fails to pick up IP with set to Dynamic)
 }
 
 resource "azurerm_network_interface" "node_manager_nic" {
   count                     = var.nm_count
   name                      = "${var.prefix}-${var.nm-prefix}-nic-${count.index}"
-  location                  = data.azurerm_resource_group.resource_group.location
+  location                  = var.location
   resource_group_name       = data.azurerm_resource_group.resource_group.name
   network_security_group_id = data.azurerm_network_security_group.node_manager_nsg.id
 
@@ -28,7 +28,7 @@ resource "azurerm_network_interface" "node_manager_nic" {
 resource "azurerm_virtual_machine" "node_manager_instance" {
   count                 = var.nm_count
   name                  = "${local.virtual_machine_name}-${count.index}"
-  location              = data.azurerm_resource_group.resource_group.location
+  location              = var.location
   resource_group_name   = data.azurerm_resource_group.resource_group.name
   network_interface_ids = [element(azurerm_network_interface.node_manager_nic.*.id, count.index)]
   vm_size               = var.vm_size # TODO: Replace this with a var

@@ -5,13 +5,13 @@ locals {
 resource "azurerm_public_ip" "zookeeper_public_ip" {
   name                = "${var.prefix}-${var.zk-prefix}-publicip"
   resource_group_name = data.azurerm_resource_group.resource_group.name
-  location            = data.azurerm_resource_group.resource_group.location
+  location            = var.location
   allocation_method   = "Static" # TODO: Use Dynamic (Blocker: for some reason remote-exec fails to pick up IP with set to Dynamic)
 }
 
 resource "azurerm_network_interface" "zookeeper_nic" {
   name                      = "${var.prefix}-${var.zk-prefix}-nic"
-  location                  = data.azurerm_resource_group.resource_group.location
+  location                  = var.location
   resource_group_name       = data.azurerm_resource_group.resource_group.name
   network_security_group_id = data.azurerm_network_security_group.zookeeper_nsg.id
 
@@ -25,7 +25,7 @@ resource "azurerm_network_interface" "zookeeper_nic" {
 
 resource "azurerm_virtual_machine" "zookeeper_instance" {
   name                  = local.virtual_machine_name
-  location              = data.azurerm_resource_group.resource_group.location
+  location              = var.location
   resource_group_name   = data.azurerm_resource_group.resource_group.name
   network_interface_ids = [azurerm_network_interface.zookeeper_nic.id]
   vm_size               = var.vm_size # TODO: Replace this with a var
