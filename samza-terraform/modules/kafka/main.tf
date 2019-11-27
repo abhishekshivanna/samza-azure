@@ -91,7 +91,7 @@ resource "azurerm_virtual_machine" "kafka_instance" {
     }
 
     inline = [
-      "echo ${var.password} | sudo -S yum install -y java-1.8.0-openjdk-headless",
+      "echo ${var.password} | sudo -S yum install -y java-devel",
       "sudo yum install -y nc",
       "chmod +x kafka.sh",
       "bash kafka.sh start",

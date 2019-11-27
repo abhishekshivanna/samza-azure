@@ -104,7 +104,7 @@ resource "azurerm_virtual_machine" "metrics_instance" {
 
     inline = [
       "wget https://dl.grafana.com/oss/release/grafana-6.5.0-1.x86_64.rpm",
-      "echo ${var.password} | sudo -S yum install -y java-1.8.0-openjdk-headless",
+      "echo ${var.password} | sudo -S yum install -y java-devel",
       "sudo yum install -y nc",
       "sudo yum localinstall -y grafana-6.5.0-1.x86_64.rpm",
       "sudo service grafana-server start",

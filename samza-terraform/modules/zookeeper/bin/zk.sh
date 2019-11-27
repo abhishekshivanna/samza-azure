@@ -47,7 +47,7 @@ install_java() {
 }
 
 setup_java() {
-  export JAVA_HOME=`readlink -f /usr/bin/java | sed "s:/bin/java::"`
+  export JAVA_HOME=`readlink -f /usr/bin/java | sed "s:/jre/bin/java::"`
 }
 
 install_zookeeper() {

@@ -53,7 +53,8 @@ install_java() {
 }
 
 setup_java() {
-  export JAVA_HOME=`readlink -f /usr/bin/java | sed "s:/bin/java::"`
+  export JAVA_HOME=`readlink -f /usr/bin/java | sed "s:/jre/bin/java::"`
+
 }
 
 start_metrics() {
@@ -62,7 +63,7 @@ start_metrics() {
   echo "Starting samza-metrics-collector connecting to Kafka server at $KAFKA_SERVER"
   LD_LIBRARY_PATH=$METRICS_COLLECTOR_DIR nohup $METRICS_COLLECTOR_DIR/samza-metrics-collector -kafka.bootstrap.servers=$KAFKA_SERVER > $LOG_DIR/samza-metrics-collector.log 2>&1 & echo $! > $METRICS_COLLECTOR_PID_FILE
   sleep 1
-  
+
   PROMETHEUS_DIR=$(ls | grep prometheus*amd64)
   echo "Starting prometheus server $PROMETHEUS_DIR"
   nohup $PROMETHEUS_DIR/prometheus --config.file=prometheus.yml > $LOG_DIR/prometheus.log 2>&1 & echo $! > $PROMETHEUS_PID_FILE
