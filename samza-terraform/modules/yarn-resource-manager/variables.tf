@@ -3,7 +3,7 @@ variable "prefix" {
 }
 
 variable "rm-prefix" {
-  default = "resource-manager"
+  default     = "resource-manager"
   description = "The prefix used for all resources used by the Resource Manager"
 }
 

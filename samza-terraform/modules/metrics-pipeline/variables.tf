@@ -30,6 +30,7 @@ variable "metrics_nsg" {
 variable "username" {
   description = "The username used to login to the machine"
 }
+
 variable "password" {
   description = "The password used to login to the machine"
 }

@@ -3,7 +3,7 @@ variable "prefix" {
 }
 
 variable "nm-prefix" {
-  default = "node-manager"
+  default     = "node-manager"
   description = "The prefix used for all resources used by the Node Manager"
 }
 

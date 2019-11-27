@@ -3,7 +3,7 @@ variable "subscription_id" {
 }
 
 variable "should_skip_provider_registration" {
-  default = true
+  default     = true
   description = "Should the AzureRM Provider skip registering the Resource Providers it supports. Setting this to true will skip registration with Azure Resouces we may not have access to as part of the subscription"
 }
 
@@ -32,19 +32,19 @@ variable "network_security_group_name" {
 }
 
 variable "nm_count" {
-  default = 2
+  default     = 2
   description = "The number of Node Manager hosts to start"
 }
 
 # Define VM class/size for all VMs
 
 variable "samza_vm_size" {
-  default = "Standard_D32_v3"
+  default     = "Standard_D32_v3"
   description = "The VM SKU for Samza Infra"
 }
 
 variable "vm_size" {
-  default = "Standard_D8_v3"
+  default     = "Standard_D8_v3"
   description = "The VM SKU"
 }
 
@@ -52,21 +52,21 @@ variable "vm_size" {
 # az vm image list --offer CentOS --all --output table
 
 variable "storage_image_publisher" {
-  default = "OpenLogic"
+  default     = "OpenLogic"
   description = "Image publisher"
 }
 
 variable "storage_image_offer" {
-  default = "CentOS"
+  default     = "CentOS"
   description = "Image offer"
 }
 
 variable "storage_image_sku" {
-  default = "7.7"
+  default     = "7.7"
   description = "Image SKU"
 }
 
 variable "storage_image_version" {
-  default = "latest"
+  default     = "latest"
   description = "Image Version"
 }
