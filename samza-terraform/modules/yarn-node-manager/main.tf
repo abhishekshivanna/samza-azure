@@ -48,7 +48,7 @@ resource "azurerm_virtual_machine" "node_manager_instance" {
     name              = "${var.prefix}-${var.nm-prefix}-osdisk-${count.index}"
     caching           = "ReadWrite"
     create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
+    managed_disk_type = "Premium_LRS"
   }
 
   os_profile {

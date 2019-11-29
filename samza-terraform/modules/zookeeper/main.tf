@@ -45,7 +45,7 @@ resource "azurerm_virtual_machine" "zookeeper_instance" {
     name              = "${var.prefix}-${var.zk-prefix}-osdisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
+    managed_disk_type = "Premium_LRS"
   }
 
   os_profile {
