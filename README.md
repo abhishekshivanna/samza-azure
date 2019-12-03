@@ -50,5 +50,5 @@ terraform plan -destroy -var-file=variables.tfvars
 ```
 Make sure everything being destoryed belongs to your deployment above. Then run the following command
 ```sh
-terraform destroy -var-file=variables.tfvars
+terraform apply -var-file=variables.tfvars
 ```
